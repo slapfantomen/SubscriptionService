@@ -8,5 +8,14 @@ namespace SubscriptionService
 {
     class Email
     {
+        public string Subject { get; set; }
+        public string Reciever { get; set; }
+        public string Text { get; set; }
+
+        public Email(string subject, string reciever)
+        {
+            Subject = subject;
+            Reciever = reciever;
+        }
     }
 }
