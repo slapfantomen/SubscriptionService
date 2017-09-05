@@ -10,20 +10,19 @@ namespace SubscriptionService
     {
         static void Main(string[] args)
         {
-            List<Email> emails = CreateAllEmails();
-            emails.ForEach(e => Console.WriteLine($"To: {e.Reciever}\n{e.Subject}\n{e.Text}\n\n"));
-
+            Demo();
         }
+
         static List<Email> CreateAllEmails()
         {
             List<Email> allEmails = new List<Email>();
             List<User> list = DBHandler.CreateUserList();
+
             list.ForEach(x =>
-            {
-                Console.WriteLine($"Articles for:  {x.FirstName} {x.LastName}");
+            {                
                 List<Article> articles = DBHandler.GetArticlesForUser(x.UserId);
-                Console.WriteLine($"articles count: {articles.Count}");
-                if(articles.Count != 0)
+                Console.WriteLine($"{articles.Count} Articles for:  {x.FirstName} {x.LastName}");
+                if (articles.Count != 0)
                 {
                     allEmails.Add(CreateEmail(x.EmailAddress, articles));
                 }
@@ -37,9 +36,57 @@ namespace SubscriptionService
             Email email = new Email($"Newsletter from News Website {DateTime.Now}", emailaddress);
             articles.ForEach(a => 
             {
-                email.Text += $"{a.Header}\nby {a.Editor}\n{a.Text}\n";
+                email.Text += $"{a.Header} by {a.Editor}\n{a.Text}\n------------------------------------------------\n";
              });
             return email;
+        }
+        static void ShowSubscriptions()
+        {
+            string sql = $"select category.category_name+' -- '+subcategory.subcategory_name" +
+                            " from users" +
+                                " join subscription_list on subscription_list.user_id = users.user_id" +
+                                " join category on category.category_id = subscription_list.category_id" +
+                                " join subscribe_details on subscribe_details.subscribe_list_id = subscription_list.list_id" +
+                                " join subcategory on subcategory.subcategory_id = subscribe_details.subcategory_id" +
+                                " where users.user_id =";
+            List<User> list = DBHandler.CreateUserList();
+            list.ForEach(x =>
+            {
+                Console.WriteLine($"{x.FirstName} {x.LastName} subscribes to: ");
+                DBHandler.QueryDb($"{sql}{x.UserId}");
+                Console.WriteLine();
+            });
+        }
+        private static void Demo()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("(S)how subscriptions");
+                Console.WriteLine("(V)iew all emails");
+                Console.WriteLine("(Q)uit");
+                Console.Write(": ");
+                string choice = Console.ReadLine().ToLower();
+                switch (choice)
+                {
+                    case "s":
+                        ShowSubscriptions();
+                        Console.ReadKey();
+                        break;
+                    case "v":
+                        List<Email> emails = CreateAllEmails();
+                        Console.WriteLine();
+                        emails.ForEach(e => Console.WriteLine(
+                            $"To: {e.Reciever}\n{e.Subject}\n------------------------------------------------\n{e.Text}\n\n"));
+                        Console.ReadKey();
+                        break;
+                    case "q":
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     } 
 }

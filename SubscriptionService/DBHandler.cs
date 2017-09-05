@@ -21,9 +21,8 @@ namespace SubscriptionService
                     var reader = com.ExecuteReader();
                     if (!reader.HasRows)
                     {
-                        Console.WriteLine("No results found in the database");
+                        Console.WriteLine("Nothing right now");
                     }
-
                     while (reader.Read())
                     {
                         int count = reader.FieldCount;
@@ -52,7 +51,6 @@ namespace SubscriptionService
                     {
                         Console.WriteLine("No users found in the database");
                     }
-
                     while (reader.Read())
                     {
                         int userId = int.Parse(reader.GetValue(0).ToString());
@@ -76,7 +74,8 @@ namespace SubscriptionService
                         " join subcategory on subcategory.subcategory_id=subscribe_details.subcategory_id" +
                         " join article on article.subcategory_id=subcategory.subcategory_id" +
                         " join editors on editors.editor_id=article.editor_id" +
-                        " where users.user_id=" +userId;
+                        " where users.user_id=" + userId +
+                        " and article.published between dateadd(day,-7,getdate()) and getdate()";
             using (var con = new SqlConnection(connstr))
             {
                 using (var com = new SqlCommand(sql, con))
@@ -96,6 +95,6 @@ namespace SubscriptionService
                 }
             }
             return list;
-        } 
+        }
     }
 }
