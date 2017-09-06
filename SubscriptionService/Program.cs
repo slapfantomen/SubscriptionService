@@ -30,13 +30,13 @@ namespace SubscriptionService
             });
             return allEmails;
         }
-
         static Email CreateEmail(string emailaddress, List<Article> articles)
         {
             Email email = new Email($"Newsletter from News Website {DateTime.Now}", emailaddress);
             articles.ForEach(a => 
             {
-                email.Text += $"{a.Header} by {a.Editor}\n{a.Text}\n------------------------------------------------\n";
+                email.Text += $"{a.Header} by {a.Editor}\n{a.Text}" +
+                $"\n------------------------------------------------\n";
              });
             return email;
         }
@@ -76,8 +76,7 @@ namespace SubscriptionService
                     case "v":
                         List<Email> emails = CreateAllEmails();
                         Console.WriteLine();
-                        emails.ForEach(e => Console.WriteLine(
-                            $"To: {e.Reciever}\n{e.Subject}\n------------------------------------------------\n{e.Text}\n\n"));
+                        emails.ForEach(e => e.ToString());
                         Console.ReadKey();
                         break;
                     case "q":

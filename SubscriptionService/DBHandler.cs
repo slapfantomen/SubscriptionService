@@ -38,9 +38,7 @@ namespace SubscriptionService
         public static List<User> CreateUserList()
         {
             List<User> list = new List<User>();
-            var sql = @"select u.user_id, u.first_name, u.last_name, e.email_address"+
-                        " from email e"+
-                        " join users u on u.email_id = e.email_id ";
+            var sql = "execute GetAllUsers";
             using (var con = new SqlConnection(connstr))
             {
                 using (var com = new SqlCommand(sql, con))
@@ -67,15 +65,7 @@ namespace SubscriptionService
         public static List<Article> GetArticlesForUser(int userId)
         {
             List<Article> list = new List<Article>();
-            var sql = @"select article_header, article.article_text, editors.first_name+' '+editors.last_name as Editor" +
-                        " from users" +
-                        " join subscription_list on subscription_list.user_id=users.user_id" +
-                        " join subscribe_details on subscribe_details.subscribe_list_id=subscription_list.list_id" +
-                        " join subcategory on subcategory.subcategory_id=subscribe_details.subcategory_id" +
-                        " join article on article.subcategory_id=subcategory.subcategory_id" +
-                        " join editors on editors.editor_id=article.editor_id" +
-                        " where users.user_id=" + userId +
-                        " and article.published between dateadd(day,-7,getdate()) and getdate()";
+            var sql = "execute GetUserArticles "+userId;
             using (var con = new SqlConnection(connstr))
             {
                 using (var com = new SqlCommand(sql, con))

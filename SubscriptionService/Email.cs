@@ -17,5 +17,10 @@ namespace SubscriptionService
             Subject = subject;
             Reciever = reciever;
         }
+        public override string ToString()
+        {
+            Console.WriteLine($"To: {this.Reciever}-\n{this.Subject}\n------------------------------------------------\n{this.Text}\n\n");
+            return base.ToString();
+        }
     }
 }
