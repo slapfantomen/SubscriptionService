@@ -10,16 +10,15 @@ namespace SubscriptionService
     {
         static List<Email> CreateAllEmails()
         {
-            List<Email> allEmails = new List<Email>();
-            List<User> list = DBHandler.CreateUserList();
-
-            list.ForEach(x =>
+            var allEmails = new List<Email>();
+            var list = DBHandler.CreateUserList();
+            list.ForEach(u =>
             {
-                List<Article> articles = DBHandler.GetArticlesForUser(x.UserId);
-                Console.WriteLine($"{articles.Count} Articles for:  {x.FirstName} {x.LastName}");
+                var articles = DBHandler.GetArticlesForUser(u.UserId);
+                Console.WriteLine($"{articles.Count} Articles for:  {u.FirstName} {u.LastName}");
                 if (articles.Count != 0)
                 {
-                    allEmails.Add(CreateEmail(x.EmailAddress, articles));
+                    allEmails.Add(CreateEmail(u.EmailAddress, articles));
                 }
             });
             return allEmails;
@@ -36,7 +35,7 @@ namespace SubscriptionService
         }
         static void ShowSubscriptions()
         {           
-            List<User> list = DBHandler.CreateUserList();
+            var list = DBHandler.CreateUserList();
             list.ForEach(u =>{Console.WriteLine($"{u.FirstName} {u.LastName} subscribes to: "); u.ShowSubscribtions();});
         }
         public static void Demo()
@@ -56,7 +55,7 @@ namespace SubscriptionService
                         Console.ReadKey();
                         break;
                     case "v":
-                        List<Email> emails = CreateAllEmails();
+                        var emails = CreateAllEmails();
                         Console.WriteLine();
                         emails.ForEach(e => e.ToString());
                         Console.ReadKey();

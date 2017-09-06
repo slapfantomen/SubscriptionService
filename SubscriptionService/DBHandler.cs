@@ -37,7 +37,7 @@ namespace SubscriptionService
         }
         public static List<User> CreateUserList()
         {
-            List<User> list = new List<User>();
+            var list = new List<User>();
             var sql = "execute GetAllUsers";
             using (var con = new SqlConnection(connstr))
             {
@@ -64,7 +64,7 @@ namespace SubscriptionService
 
         public static List<Article> GetArticlesForUser(int userId)
         {
-            List<Article> list = new List<Article>();
+            var list = new List<Article>();
             var sql = "execute GetUserArticles "+userId;
             using (var con = new SqlConnection(connstr))
             {
