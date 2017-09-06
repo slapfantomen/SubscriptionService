@@ -20,5 +20,11 @@ namespace SubscriptionService
             LastName = lastName;
             EmailAddress = emailAddress;
         }
+        public void ShowSubscribtions()
+        {
+            string sql = "execute GetUserSubscriptions ";
+            DBHandler.QueryDb($"{sql}{this.UserId}");
+            Console.WriteLine();
+        }
     }
 }
