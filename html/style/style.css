@@ -1,5 +1,5 @@
 body {
-	background-color: #DFBD82;
+	background-image: url("../img/stars.gif");
 }
 h2 {
 	text-align: left;
@@ -15,10 +15,10 @@ h3 {
 
 div {
 	border: 1px solid black;
-    background-image: url("../img/wallpaper.jpg");
+    background-image: url("../img/paper.jpg");
 	padding: 2em;
 	margin: 0 auto;
-	height: 300px;
+	height: auto;
 	width: 400px;
 	border-radius: 30px;
 }

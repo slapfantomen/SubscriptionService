@@ -8,6 +8,6 @@ namespace SubscriptionService
 {
     public enum OutputType
     {
-        html, terminal
+        Html, Terminal
     }
 }

@@ -30,7 +30,7 @@ namespace SubscriptionService
             var email = new Email($"Newsletter {DateTime.Now}", emailaddress);
             articles.ForEach(a =>
             {
-                email.Text += t == OutputType.html ? $"{a.Header} by {a.Editor}<br>{a.Text}<br><br><hr>" 
+                email.Text += t == OutputType.Html ? $"<b>{a.Header}</b><br><i>by {a.Editor}</i><br>{a.Text}<br><br><hr>" 
                 : email.Text += $"{a.Header} by {a.Editor}\n{a.Text}\n";
             });
             return email;
@@ -75,7 +75,7 @@ namespace SubscriptionService
 
         private static void PrintEmailToConsole()
         {
-            var emails = CreateAllEmails(OutputType.terminal);
+            var emails = CreateAllEmails(OutputType.Terminal);
             emails.ForEach(e => {
                 var sw = new StringWriter();
                 e.ToString();
@@ -84,7 +84,7 @@ namespace SubscriptionService
         }
         static void CreateEmailHtmlPage()
         {
-            var emails = CreateAllEmails(OutputType.html);
+            var emails = CreateAllEmails(OutputType.Html);
             Console.WriteLine();
             using (var sw = new StreamWriter("../../../html/emails.html"))
             {
