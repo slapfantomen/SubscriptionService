@@ -22,7 +22,7 @@ namespace SubscriptionService
         }
         public void ShowSubscribtions()
         {
-            string sql = "execute GetUserSubscriptions ";
+            var sql = "execute GetUserSubscriptions ";
             DBHandler.QueryDb($"{sql}{this.UserId}");
             Console.WriteLine();
         }
