@@ -10,37 +10,6 @@ namespace SubscriptionService
 {
     class Send
     {
-        static List<Email> CreateAllEmails(OutputType t)
-        {
-            var allEmails = new List<Email>();
-            var list = DBHandler.CreateUserList();
-            list.ForEach(u =>
-            {
-                var articles = DBHandler.GetArticlesForUser(u.UserId);
-                Console.WriteLine($"{articles.Count} Articles for:  {u.FirstName} {u.LastName}");
-                if (articles.Count != 0)
-                {
-                    allEmails.Add(CreateEmail(u.EmailAddress, articles, t));
-                }
-            });
-            return allEmails;
-        }
-        static Email CreateEmail(string emailaddress, List<Article> articles, OutputType t)
-        {
-            var email = new Email($"Newsletter {DateTime.Now}", emailaddress);
-            articles.ForEach(a =>
-            {
-                email.Text += t == OutputType.Html ? $"<b>{a.Header}</b><br><i>by {a.Editor}</i><br>{a.Text}<br><br><hr>" 
-                : email.Text += $"{a.Header} by {a.Editor}\n{a.Text}\n";
-            });
-            return email;
-        }
-        static void ShowSubscriptions()
-        {           
-            var list = DBHandler.CreateUserList();
-            list.ForEach(u =>{Console.WriteLine($"{u.FirstName} {u.LastName} subscribes to: "); u.ShowSubscribtions();});
-        }
- 
         public static void Demo()
         {
             while (true)
@@ -72,12 +41,40 @@ namespace SubscriptionService
                 }
             }
         }
-
+        static void ShowSubscriptions()
+        {           
+            var list = DBHandler.CreateUserList();
+            list.ForEach(u =>{Console.WriteLine($"{u.FirstName} {u.LastName} subscribes to: "); u.ShowSubscribtions();});
+        }
+        static List<Email> CreateAllEmails(OutputType t)
+        {
+            var allEmails = new List<Email>();
+            var list = DBHandler.CreateUserList();
+            list.ForEach(u =>
+            {
+                var articles = DBHandler.GetArticlesForUser(u.UserId);
+                Console.WriteLine($"{articles.Count} Articles for:  {u.FirstName} {u.LastName}");
+                if (articles.Count != 0)
+                {
+                    allEmails.Add(CreateEmail(u.EmailAddress, articles, t));
+                }
+            });
+            return allEmails;
+        }
+        static Email CreateEmail(string emailaddress, List<Article> articles, OutputType t)
+        {
+            var email = new Email($"Newsletter {DateTime.Now}", emailaddress);
+            articles.ForEach(a =>
+            {
+                email.Text += t == OutputType.Html ? $"<b>{a.Header}</b><br><i>by {a.Editor}</i><br>{a.Text}<br><br><hr>" 
+                : email.Text += $"{a.Header} by {a.Editor}\n{a.Text}\n";
+            });
+            return email;
+        }
         private static void PrintEmailToConsole()
         {
             var emails = CreateAllEmails(OutputType.Terminal);
             emails.ForEach(e => {
-                var sw = new StringWriter();
                 e.ToString();
             });
             Console.ReadKey();
@@ -114,7 +111,6 @@ namespace SubscriptionService
                     writer.RenderEndTag();
                     writer.RenderEndTag();
                 }
-
             }
             Console.WriteLine("Created -emails.html-");
             Console.ReadKey();
